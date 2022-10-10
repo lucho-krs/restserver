@@ -31,12 +31,23 @@ const postUser = async(req, res = response) => {
 
 }
 
-const putUser = (req, res = response) => {
-    const id = req.params.id;
+const putUser = async(req, res = response) => {
+
+    const { id } = req.params;
+    const { _id, password, google, email, ...rest } = req.body;
+
+    // Validar id en la base de datos
+    if ( password ) {
+        // Encriptar contraseña
+        const salt = bcryptjs.genSaltSync();
+        rest.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const user = await User.findByIdAndUpdate( id, rest );
 
     res.json({
         msg: 'put controllers',
-        id
+        user
     });
 }
 
