@@ -20,7 +20,7 @@ const getUser = async(req, res = response) => {
         users
     });
 
-}
+};
 
 const postUser = async(req, res = response) => {
     
@@ -39,7 +39,7 @@ const postUser = async(req, res = response) => {
         user
     });
 
-}
+};
 
 const putUser = async(req, res = response) => {
 
@@ -55,7 +55,7 @@ const putUser = async(req, res = response) => {
     const user = await User.findByIdAndUpdate( id, rest );
 
     res.json(user);
-}
+};
 
 const deleteUser = async(req, res = response) => {
 
@@ -63,7 +63,7 @@ const deleteUser = async(req, res = response) => {
 
     const user = await User.findByIdAndUpdate( id, { status: false } )
     
-    res.json(user);
+    res.json( user );
 
 }
 

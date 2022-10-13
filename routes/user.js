@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
+const { validateJWT } = require('../middleware/validate-jwt');
 const { validateData } = require('../middleware/validate-data');
 const { 
     isValidRole,
@@ -36,6 +37,7 @@ router.put('/:id', [
 ], putUser);
 
 router.delete('/:id', [
+    validateJWT,
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( userExist ),
     validateData
