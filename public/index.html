@@ -30,6 +30,7 @@
     <script>
         function handleCredentialResponse(response) {
 
+            console.log('response>', resp);
             const body = { id_token: response.credential };
 
             fetch('https://rest-server-nodejs-001.herokuapp.com/api/auth/google', {
