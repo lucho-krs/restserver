@@ -35,7 +35,7 @@ const postUser = async(req, res = response) => {
     await user.save();
 
     res.json({
-        msg: 'post controllers',
+        msg: 'Usuario creado con exito',
         user
     });
 
@@ -55,6 +55,7 @@ const putUser = async(req, res = response) => {
     const user = await User.findByIdAndUpdate( id, rest );
 
     res.json(user);
+
 };
 
 const deleteUser = async(req, res = response) => {
