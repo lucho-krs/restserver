@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { categoryExist } = require('../helpers/db-validators');
+const { 
+    categoryExist,
+    categoryExistById
+} = require('../helpers/db-validators');
 
 const {
     validateJWT,
@@ -30,26 +33,26 @@ router.post('/', [
 
 router.get('/:id', [
     check('id', 'No es un ID válido').isMongoId(),
-    check('id').custom( categoryExist ),
+    check('id').custom( categoryExistById ),
     validateData
 ], getCategory);
 
-// token
 router.put('/:id', [
     validateJWT,
     isAdminRole,
     check('id', 'No es un ID válido').isMongoId(),
-    check('id').custom( categoryExist ),
+    check('id').custom( categoryExistById ),
+    check('name', 'El nombre es obligatorio').not().isEmpty(),
+    check('name').custom( categoryExist ),
     validateData
 ], putCategory);
 
-// admin
 router.delete('/:id', [
     validateJWT,
     isAdminRole,
     hasRole('ADMIN_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
-    check('id').custom( categoryExist ),
+    check('id').custom( categoryExistById ),
     validateData
 ], deleteCategory);
 

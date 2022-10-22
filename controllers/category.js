@@ -24,7 +24,8 @@ const getCategories = async(req, res = response) => {
 const getCategory = async(req, res = response) => {
 
     const { id } = req.params;
-    const categoryDB = await Category.findById( id ); 
+    const categoryDB = await Category.findById( id )
+        .populate( 'user', 'name img' ); 
 
     res.json({
         categoryDB
@@ -62,19 +63,12 @@ const postCategory = async(req, res = response) => {
 const putCategory = async(req, res = response) => {
 
     const { id } = req.params;
-    const name = req.body.name.toUpperCase();
+    const { status, user, ...data } = req.body;
 
-    const categoryDB = await Category.findOne({ name });
+    data.name = data.name.toUpperCase();
+    data.userAuth = req.userAuth._id;
 
-    if ( categoryDB ) {
-
-        return res.status(400).json({
-            msg: `La categoria ${ name }, ya existe`
-        });
-
-    };
-    
-    const category = await Category.findByIdAndUpdate( id, { name }, { new: true } );
+    const category = await Category.findByIdAndUpdate( id, data, { new: true } );
 
     res.json({
         msg: 'Categoria actualizada',
@@ -83,15 +77,13 @@ const putCategory = async(req, res = response) => {
 
 };
 
-// Borrar categoria estado falso
 const deleteCategory = async(req, res = response) => {
 
     const { id } = req.params;
-    const category = await Category.findByIdAndUpdate( id, { status: false } );
+    const category = await Category.findByIdAndUpdate( id, { status: false }, { new: true } );
 
     res.json({
-        category,
-        userAuth: req.userAuth
+        category
     });
 
 };
