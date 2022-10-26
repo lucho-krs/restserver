@@ -32,7 +32,7 @@ router.post('/', [
     check('name').custom( productExist ),
     check('category', 'La categoria no es valida').isMongoId(),
     check('category').custom( categoryExistById ),
-    check('price', 'El precio debe ser un número valido').isNumeric(),
+    check('price', 'El precio debe ser un número valido').isInt({ min: 0 }),
     validateData
 ], postProduct);
 
