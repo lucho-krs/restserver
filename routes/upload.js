@@ -1,12 +1,11 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { uploadFile } = require('../controllers/upload');
-
+const { fileUpload } = require('../controllers/upload');
 const { validateData } = require('../middleware/validate-data');
 
 const router = Router();
 
-router.post( '/', uploadFile );
+router.post( '/', fileUpload );
 
 module.exports = router;

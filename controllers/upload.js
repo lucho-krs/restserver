@@ -1,6 +1,7 @@
 const path = require('path');
+const { uploadFile } = require('../helpers');
 
-const uploadFile = ( req, res ) => {
+const fileUpload = async( req, res ) => {
 
     if (!req.files || Object.keys( req.files ).length === 0 || !req.files.file ) {
 
@@ -11,23 +12,12 @@ const uploadFile = ( req, res ) => {
         
     };
 
-    const { file } = req.files;
-    const uploadPath = path.join( __dirname, '../uploads', file.name);
+    const nameFile = await uploadFile( req.files );
 
-    // Use the mv() method to place the file somewhere on your server
-    file.mv(uploadPath, function(err) {
-        if (err) {
-            return res.status(500).json({err});
-        };
-
-        res.json({ 
-            msg: `Archivo subido en ${ uploadPath }`
-        });
-
-    });
+    res.json({ nameFile });
 
 };
 
 module.exports = {
-    uploadFile
+    fileUpload
 };
