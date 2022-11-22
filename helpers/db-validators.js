@@ -4,6 +4,7 @@ const {
     User,
     Product
 } = require('../models');
+const { collection } = require('../models/category');
 
 const isValidRole = async( role = '' ) => {
 
@@ -86,6 +87,19 @@ const productExist = async( name = '' ) => {
 
 };
 
+const isValidCollections = ( collection = '', collections = [] ) => {
+    
+    const isIncludes = collections.includes( collection );
+    if ( !isIncludes ) {
+
+        throw new Error(`La colección ${ collection } no es valida, colecciones permitidas: ${ collections }`);
+
+    };
+
+    return true;
+
+};
+
 module.exports = {
     isValidRole,
     emailExist,
@@ -93,5 +107,6 @@ module.exports = {
     categoryExistById,
     categoryExist,
     productExistById,
-    productExist
+    productExist,
+    isValidCollections
 };
