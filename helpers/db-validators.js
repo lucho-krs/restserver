@@ -37,6 +37,8 @@ const userExist = async( id = '' ) => {
 
     };
 
+    return userExist;
+
 };
 
 const categoryExist = async( name = '' ) => {
@@ -71,6 +73,8 @@ const productExistById = async( id = '' ) => {
         throw new Error(`El id ${ id } NO existe en la BD`);
 
     };
+
+    return productExist;
 
 };
 

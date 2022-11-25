@@ -22,7 +22,7 @@ const uploadFile = ( { file }, validateExtensions = [ 'png', 'jpg', 'jpeg', 'gif
                 return reject( err );
             };
     
-            return resolve( `Archivo ${ nameTemp }` );
+            return resolve( `${ nameTemp }` );
     
         });
     });
