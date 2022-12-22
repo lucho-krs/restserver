@@ -1,6 +1,15 @@
-const socketController = ( socket ) => {
+const { checkToken } = require("../helpers");
 
-    console.log('Cliente conectado', socket.id);
+const socketController = async( socket ) => {
+
+    const user = await checkToken( socket.handshake.headers['x-token'] );
+    if ( !user ) {
+      
+        return socket.disconnect();
+
+    };
+
+    console.log( 'Se conecto:', user.name );
 
 };
 

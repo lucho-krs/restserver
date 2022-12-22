@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { User } = require('../models');
 
 const generateJWT = ( uid = '' ) => {
 
@@ -18,10 +19,50 @@ const generateJWT = ( uid = '' ) => {
             }
         });
 
-    })
+    });
+
+};
+
+const checkToken = async( token = '' ) => {
+
+    try {
+
+        if ( token.length < 5 ) {
+
+            return null;
+
+        };
+
+        const { uid } = jwt.verify( token, process.env.PRIVATE_KEY );
+        const user = await User.findById( uid );
+        
+        if ( user ) {
+            
+            if ( user.status ) {
+
+                return user;
+
+            } else {
+
+                return null;
+
+            };
+
+        } else {
+
+            return null;
+
+        };
+        
+    } catch (error) {
+
+        return null;
+        
+    };
 
 };
 
 module.exports = {
-    generateJWT
+    generateJWT,
+    checkToken
 };
