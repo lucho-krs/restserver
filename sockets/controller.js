@@ -1,6 +1,9 @@
 const { checkToken } = require("../helpers");
+const { ChatMessage } = require("../models");
 
-const socketController = async( socket ) => {
+const chatMessage = new ChatMessage();
+
+const socketController = async( socket, io ) => {
 
     const user = await checkToken( socket.handshake.headers['x-token'] );
     if ( !user ) {
@@ -9,7 +12,15 @@ const socketController = async( socket ) => {
 
     };
 
-    console.log( 'Se conecto:', user.name );
+    chatMessage.connectUser( user );
+    io.emit( 'active-users', chatMessage.usersArr );
+    
+    io.on( 'disconnect', () => {
+        
+        chatMessage.disconnectUser( user.id );
+        io.emit( 'active-users', chatMessage.usersArr );
+
+    });
 
 };
 
