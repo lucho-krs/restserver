@@ -14,15 +14,15 @@ class chatMessage {
 
     constructor() {
 
-        this.message = [];
+        this.messages = [];
         this.users = {};
 
     };
 
     get last10() {
 
-        this.message = this.message.splice(0, 10);
-        return this.message;
+        this.messages = this.messages.splice(0, 10);
+        return this.messages;
 
     };
 
@@ -34,7 +34,7 @@ class chatMessage {
 
     sendMessage( uid, name, message ) {
 
-        this.message.unshift(
+        this.messages.unshift(
 
             new Message( uid, name, message )
 
@@ -44,7 +44,7 @@ class chatMessage {
 
     connectUser( user ) {
 
-        this.users[ user.uid ] = user;
+        this.users[ user.id ] = user;
 
     };
 

@@ -61,16 +61,36 @@ const connectSocket = async() => {
 
     });
 
-    socket.on( 'active-users', ( payload ) => {
-
-        console.log(payload);
-
-    });
+    socket.on( 'active-users', orderUsers );
 
     socket.on( 'private-message', () => {
 
 
     });
+
+};
+
+const orderUsers = ( users = [] ) => {
+
+    let usersHtml = '';
+    users.forEach( ({ name, uid }) => {
+
+        usersHtml += `
+
+            <li>
+                <p>
+
+                    <h5 class="text-success">${ name }</h5>
+                    <span class="fs-6 text-muted">${ uid }</span>
+
+                </p>
+            </li>
+
+        `;
+
+    });
+
+    ulUsers.innerHTML = usersHtml
 
 };
 
