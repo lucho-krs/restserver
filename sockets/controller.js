@@ -13,13 +13,34 @@ const socketController = async( socket = new Socket(), io ) => {
 
     };
 
+    // Agregar al usuario conectado
     chatMessage.connectUser( user );
     io.emit( 'active-users', chatMessage.usersArr );
+    socket.emit( 'receive-message', chatMessage.last10 );
+
+    // Conectarlo a una sala especial
+    socket.join( user.id );
     
+    // Limpiar cuando alguien se desconecta
     socket.on( 'disconnect', () => {
         
         chatMessage.disconnectUser( user.id );
         io.emit( 'active-users', chatMessage.usersArr );
+
+    });
+
+    socket.on( 'send-message', ({ uid, msg }) => {
+
+        if ( uid ) {
+
+            socket.to( uid ).emit( 'private-message', { de: user.name, msg });
+            
+        } else {
+            
+            chatMessage.sendMessage( user.id, user.name, msg );
+            io.emit( 'receive-message', chatMessage.last10 );
+
+        };
 
     });
 

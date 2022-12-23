@@ -56,15 +56,13 @@ const connectSocket = async() => {
 
     });
 
-    socket.on( 'receive-message', () => {
-
-
-    });
+    socket.on( 'receive-message', orderMessages);
 
     socket.on( 'active-users', orderUsers );
 
-    socket.on( 'private-message', () => {
+    socket.on( 'private-message', ( payload ) => {
 
+        console.log('msg provado:', payload);
 
     });
 
@@ -90,9 +88,47 @@ const orderUsers = ( users = [] ) => {
 
     });
 
-    ulUsers.innerHTML = usersHtml
+    ulUsers.innerHTML = usersHtml;
 
 };
+
+const orderMessages = ( messages = [] ) => {
+
+    let messageHtml = '';
+    console.log('messages', messages);
+    messages.forEach( ({ name, message }) => {
+
+        messageHtml += `
+
+            <li>
+                <p>
+
+                    <span class="fs-6 text-primary">${ name }</span>
+                    <span>${ message }</span>
+
+                </p>
+            </li>
+
+        `;
+
+    });
+
+    ulMessages.innerHTML = messageHtml;
+
+};
+
+txtMessage.addEventListener( 'keyup', ({ keyCode }) => {
+
+    const msg = txtMessage.value;
+    const uid = txtUid.value;
+
+    if ( keyCode !== 13 ) { return; }
+    if ( msg.length === 0 ) { return; }
+
+    socket.emit( 'send-message', { msg, uid } );
+    txtMessage.value = '';
+
+});
 
 const main = async() => {
 
